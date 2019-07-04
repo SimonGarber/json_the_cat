@@ -5,16 +5,18 @@ const fetchBreedDescription = function(breedChoice,callback) {
   request.get(url,function(err,resp,body) {
     if (err) {
       throw "error getting URL" + err;
-    }  else {
-const data = JSON.parse(body);
+    }  else if (!breedChoice) {
+      throw "You haven't made a choice, please try again";
+    } else {
+      const data = JSON.parse(body);
       if (data.length === 0) {
         throw "Breed not found, try again..";
+      }
+      callback(data[0].description);
     }
-    callback(data);
-    }
- });
+  });
 };
 
 
-module.exports = fetchBreedDescription;       
+module.exports = {fetchBreedDescription};
 
