@@ -4,15 +4,17 @@ const fetchBreedDescription = function(breedChoice,callback) {
   const url = `https://api.thecatapi.com/v1/breeds/search?q=${breedChoice}`;
   request.get(url,function(err,resp,body) {
     if (err) {
-      throw "error getting URL" + err;
+      callback(null,err)
     }  else if (!breedChoice) {
-      throw "You haven't made a choice, please try again";
+      callback(err,null)
     } else {
       const data = JSON.parse(body);
       if (data.length === 0) {
-        throw "Breed not found, try again..";
+        callback(err,null)
+      } else {
+        callback(null,data[0].description);
       }
-      callback(data[0].description);
+       
     }
   });
 };
